@@ -12,7 +12,7 @@ Hybrid Multi-Cloud Architecture: Dual-cluster simulation separating On-Premises 
 Cost Optimization: Measurable multi-dimensional cost reductions achieving an 83.4% infrastructure savings across image compression, resource right-sizing, and elastic scaling.
 System Architecture
 
-Repository Structure
+REPOSITORY STRUCTURE
 ├── src/
 │   ├── app.py                      # Flask backend (atomic Redis INCR, probes, stats)
 │   └── templates/
@@ -39,7 +39,8 @@ Repository Structure
 ├── docker-compose.yml              # Local multi-container development configuration
 ├── .dockerignore                   # Build context exclusion rules
 └── README.md                       # Master project documentation
-Execution & Verification Guide
+
+EXECUTION AND VERIFICATION GUIDE
 Phase 1: Local Docker Compose Setup
 Run the application locally without Kubernetes:
 
@@ -74,7 +75,6 @@ kubectl delete pod <flask-pod-name>
 kubectl get pods -w
 Phase 3: Autoscaling (HPA) Demonstration
 Enable the Metrics Server and generate concurrent load:
-
 # Enable Metrics Server
 minikube addons enable metrics-server
 
@@ -91,7 +91,6 @@ python scripts/load_test.py --url "http://127.0.0.1:8080/load?n=35000" --concurr
 kubectl get hpa flask-hpa -w
 Phase 4: Hybrid Cloud Deployment & Failover Demonstration
 Simulate multi-cloud failover across two isolated namespaces:
-
 # Deploy Private and Public Cloud environments
 kubectl apply -f k8s/hybrid/private-cloud.yaml
 kubectl apply -f k8s/hybrid/public-cloud.yaml
@@ -111,12 +110,4 @@ python scripts/failover_proxy.py
 kubectl scale deployment flask-deployment -n private-cloud --replicas=0
 
 # Observe Failover Gateway instantly divert 100% of user traffic to Public Cloud!
-Cost Optimization Summary
-Technique	Baseline (Before)	Optimized (After)	Measured Savings
-1. Docker Image Size	1,020 MB (Full Python)	218 MB (python:3.11-slim)	78.6% Reduction
-2. Resource Right-Sizing	500m CPU / 512Mi (Guessed)	50m CPU / 64Mi (Profiled)	88.9% Node Bin-Packing Density
-3. Autoscaling (HPA)	6 Replicas 24/7 (Static Peak)	Avg 2.67 Replicas (Dynamic)	55.5% Compute Bill Reduction
-Total Cloud Expenditure	$248.80 / month	$41.20 / month	83.4% Total Savings ($2,491.20 / yr)
-Detailed calculations and formulas available in docs/COST_OPTIMIZATION_REPORT.md.
-
 
